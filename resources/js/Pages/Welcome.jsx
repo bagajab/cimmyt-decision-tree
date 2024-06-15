@@ -124,7 +124,7 @@ const TopBar = (props) => {
     return (
         <div className="w-full h-[33px] gap-[5px] border-b m-2">
             <div className="flex justify-between">
-                <div className="font-arial text-[14px] font-normal leading-[20px] tracking-tighter text-center text-[#6A707E]">
+                <div className="font-arial text-[14px] font-normal leading-[20px] text-center text-[#6A707E]">
                     cimmyt-academy@cgiar.org | FAQ
                 </div>
                 <div className="flex space-x-2">
@@ -180,6 +180,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
+            <Head title="Decision Tree"/>
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className=" h-[138px] w-full">
