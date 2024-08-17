@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import { useRef, useState } from "react";
-import Header, { DecisionTreeBanner } from "./DecisionTree/Header";
+import { DecisionTreeBanner, Header } from "./DecisionTree/Header";
 
 const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
     console.log({ nodes });
@@ -47,8 +47,8 @@ const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
             <DecisionTreeBanner />
 
             <div className="mx-2 sm:mx-5 md:mx-10 lg:mx-20 xl:mx-56 my-5">
-                <div className="flex w-full gap-4">
-                    <div className="w-3/12 flex flex-col gap-2">
+                <div className="flex flex-col lg:flex-row w-full gap-4">
+                    <div className="lg:w-3/12 w-full flex flex-col gap-2">
                         {stages.map((stage) => (
                             <div
                                 key={stage.id}
@@ -61,7 +61,7 @@ const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
                             </div>
                         ))}
                     </div>
-                    <div className="w-3/12 bg-white shadow-md rounded-lg p-4">
+                    <div className="lg:w-3/12 w-full bg-white shadow-md rounded-lg p-4">
                         <h4 className="text-sm font-semibold text-black mb-2">
                             Current Path:
                         </h4>
@@ -86,9 +86,9 @@ const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
                             </ol>
                         </div>
                     </div>
-                    <div className="w-6/12 h-auto flex flex-col gap-4">
+                    <div className="lg:w-6/12 w-full h-auto flex flex-col gap-4">
                         {currentChildren.length > 0 ? (
-                            <div className="grid grid-cols-3 gap-4 p-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                                 {currentChildren.map((child) => (
                                     <div
                                         key={child.id}
@@ -111,8 +111,6 @@ const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
                             </div>
                         )}
                     </div>
-
-                    
                 </div>
             </div>
         </div>
