@@ -29,11 +29,11 @@ RUN npm install -g yarn
 # Copy the entire Laravel project
 COPY . .
 
-# Generate the Laravel application key
-RUN php artisan key:generate
-
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader
+
+# Generate the Laravel application key
+RUN php artisan key:generate
 
 # Build assets using Laravel Mix
 RUN npm install
