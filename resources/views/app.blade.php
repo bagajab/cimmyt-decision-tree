@@ -9,6 +9,14 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <style>
+            .tree-container {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  pointer-events: none;
+}
+        </style>
 
         <!-- Scripts -->
         @routes

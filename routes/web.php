@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\DecisionTreeController;
 use App\Http\Controllers\ProfileController;
+use App\Models\DecisionTree;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $nodes = DecisionTree::with(['children', 'goToAction', 'yesAction', 'noAction'])->get();
     return Inertia::render('Welcome', [
+        'nodes' => $nodes,
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,

@@ -1,409 +1,122 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
-import Dropdown from "@/Components/Dropdown";
-import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import LinkedInLogo from "@/Icons/LinkedInLogo";
-import UserLogo from "@/Icons/UserLogo";
-import { Link, Head } from "@inertiajs/react";
-import { useState } from "react";
+import { Head } from "@inertiajs/react";
+import { useRef, useState } from "react";
+import Header, { DecisionTreeBanner } from "./DecisionTree/Header";
 
-const entries = [
-    {
-        title: "TRAIT GENETIC SCOPING",
-        subtitle: "Development of efficient, robust phenotyping methodology",
-        description:
-            "Valid across landraces and elite lines. The level of accuracy or precision is important. You need average accuracy/precision, but it doesn't normally need to be highly precise which is often slow and expensive. A compromise is needed; a breeding-relevant phenotyping protocol, allowing separation of alleles but not necessarily highly precise discrimination.",
-    },
-    {
-        title: "GENETIC TRAIT MAPPING",
-        subtitle: "Advancement in genetic trait mapping",
-        description:
-            "Essential across various species. The accuracy level must be balanced with cost and speed. Generally, high precision isn't required for initial mapping, though it's vital for detailed studies. Efficient methods prioritize relevance over extreme precision.",
-    },
-    {
-        title: "PHENOTYPING EFFICIENCY",
-        subtitle: "Streamlining phenotyping for genetic improvement",
-        description:
-            "Applicable to both wild and cultivated varieties. Precision should meet the standard for effective selection. High precision methods are often too slow and costly for large-scale implementation, necessitating a more balanced approach.",
-    },
-    {
-        title: "SELECTION PROTOCOLS",
-        subtitle: "Refinement of trait-based selection protocols",
-        description:
-            "Crucial for both hybrid and inbred lines. The need for accuracy should be weighed against operational efficiency. Typically, ultra-high precision is less critical than the overall effectiveness of the selection protocol.",
-    },
-    {
-        title: "TRAIT IDENTIFICATION",
-        subtitle: "Optimizing genetic trait identification processes",
-        description:
-            "Valid for various genetic backgrounds. While precision is important, the methods must also be scalable and cost-effective. The goal is a compromise that maximizes breeding relevance without excessive precision demands.",
-    },
-    {
-        title: "PHENOTYPING ACCURACY",
-        subtitle: "Enhancing phenotyping accuracy and efficiency",
-        description:
-            "Suitable across different crop types. A balanced precision approach is necessary to ensure both speed and cost-efficiency. Ultra-high precision is often impractical for large-scale operations.",
-    },
-    {
-        title: "METHODOLOGY ROBUSTNESS",
-        subtitle: "Improving robustness of phenotyping methodologies",
-        description:
-            "Applicable across multiple species and varieties. The accuracy requirement should align with practical breeding needs. Typically, a moderate level of precision is sufficient for most breeding programs.",
-    },
-    {
-        title: "TRAIT EVALUATION",
-        subtitle: "Advancing efficient trait evaluation techniques",
-        description:
-            "Essential for both commercial and experimental lines. The accuracy level should facilitate effective selection without imposing excessive costs. Compromise methods prioritize practical relevance over extreme precision.",
-    },
-    {
-        title: "TRAIT DISCOVERY",
-        subtitle: "Innovations in phenotyping for trait discovery",
-        description:
-            "Crucial for wide genetic diversity. Precision should support effective breeding decisions while maintaining efficiency. High precision is less critical than ensuring relevance to breeding goals.",
-    },
-    {
-        title: "PHENOTYPING FRAMEWORKS",
-        subtitle: "Developing robust phenotyping frameworks",
-        description:
-            "Valid for diverse genetic lines. Precision must be balanced with speed and cost considerations. Practical methods emphasize relevance to breeding over ultra-high precision.",
-    },
-];
+const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
+    console.log({ nodes });
+    const stages = nodes.filter((node) => node.starter_question);
+    const [currentStage, setCurrentStage] = useState(stages[0]);
+    const [path, setPath] = useState([stages[0]]);
+    const treeRef = useRef();
 
-const Questions = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % entries.length);
+    const handleStageClick = (stage) => {
+        setCurrentStage(stage);
+        setPath([stage]);
     };
 
-    const handleBack = () => {
-        setCurrentIndex(
-            (prevIndex) => (prevIndex - 1 + entries.length) % entries.length
-        );
+    const handleChildClick = (child) => {
+        setCurrentStage(child);
+        setPath((prevPath) => [...prevPath, child]);
     };
 
-    const { title, subtitle, description } = entries[currentIndex];
-
-    return (
-        <div className="h-auto bg-cover bg-center bg-gray-200 m-4 p-4 rounded-lg shadow-lg">
-            <div className="flex flex-col h-full justify-between">
-                <div className="flex flex-col md:flex-row">
-                    <div className="w-full md:w-1/4">
-                        <h1 className="text-lg font-bold text-left text-[#283B45]">
-                            {title}
-                        </h1>
-                    </div>
-                    <div className="flex flex-col w-full md:w-3/4 mt-4 md:mt-0">
-                        <h2 className="text-sm font-bold text-[#283B45]">
-                            {subtitle}
-                        </h2>
-                        <p className="text-sm text-[#828282]">{description}</p>
-                        <div className="flex justify-end mt-4">
-                            <button
-                                onClick={handleBack}
-                                className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-                            >
-                                Back
-                            </button>
-                            <button
-                                onClick={handleNext}
-                                className="bg-green-500 text-white px-4 py-2 rounded"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const TopBar = (props) => {
-    return (
-        <div className="w-full h-[33px] gap-[5px] border-b m-2">
-            <div className="flex justify-between">
-                <div className="font-arial text-[14px] font-normal leading-[20px] text-center text-[#6A707E]">
-                    cimmyt-academy@cgiar.org | FAQ
-                </div>
-                <div className="flex space-x-2">
-                    <div className="mt-1">
-                        <LinkedInLogo />
-                    </div>
-                    <div>|</div>
-                    <div className="mt-1">
-                        <UserLogo />
-                    </div>
-                    <div className="mt-1 font-arial text-[12px] font-bold leading-[16px] tracking-extraTight text-center text-[#279A82]">
-                        Login
-                    </div>
-                    <div>|</div>
-                    <div className="mt-1 font-arial text-[12px] font-bold leading-[16px] tracking-extraTight text-center text-[#279A82]">
-                        Register
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-const DecisionTreeBanner = () => {
-    return (
-        <div
-            className="w-full h-[198px] bg-cover bg-center bg-gray-600"
-            style={{ backgroundImage: "url('/banner-image.jpeg')" }}
-        >
-            <div className="w-full h-full bg-[#283B45] bg-opacity-90 flex justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10">
-                <h1 className="text-white text-[24px] sm:text-[28px] md:text-[32px] font-bold leading-[32px] sm:leading-[36px] md:leading-[40px] text-center">
-                    Trait Discovery & Deployment Implementation Decision Tree
-                </h1>
-            </div>
-        </div>
-    );
-};
-
-export default function Welcome({ auth, laravelVersion, phpVersion }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
-
-    const handleImageError = () => {
-        document
-            .getElementById("screenshot-container")
-            ?.classList.add("!hidden");
-        document.getElementById("docs-card")?.classList.add("!row-span-1");
-        document
-            .getElementById("docs-card-content")
-            ?.classList.add("!flex-row");
-        document.getElementById("background")?.classList.add("!hidden");
+    const handlePathClick = (node, index) => {
+        setCurrentStage(node);
+        setPath((prevPath) => prevPath.slice(0, index + 1));
     };
+
+    const lastNodeInPath = path[path.length - 1];
+    let currentChildren = nodes.filter((node) => node.parent_id === lastNodeInPath.id);
+
+    // If there are no children and go_to_id exists, find the node with go_to_id
+    if (currentChildren.length === 0 && lastNodeInPath.go_to_id) {
+        const goToNode = nodes.find((node) => node.id === lastNodeInPath.go_to_id);
+        if (goToNode) {
+            currentChildren = [goToNode];
+        }
+    }
+
+    // If there are still no children and no go_to_id, set currentChildren to an empty array
+    if (currentChildren.length === 0) {
+        currentChildren = [];
+    }
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <Head title="Decision Tree"/>
-            <nav className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className=" h-[138px] w-full">
-                        <TopBar />
-                        <div className="flex justify-between mt-4">
-                            <div className="flex justify-between w-full">
-                                <div className="shrink-0 flex items-center">
-                                    <Link href="/">
-                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
-                                    </Link>
-                                </div>
+            <Head title="Decision Tree" />
+            <Header />
+            <DecisionTreeBanner />
 
-                                <div className="flex space-x-2.4">
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            Home
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            About Us
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            Students
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            Partners
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            Alumni
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            CDS
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            LMS
-                                        </NavLink>
-                                    </div>
-                                    <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("dashboard")}
-                                            active={route().current(
-                                                "dashboard"
-                                            )}
-                                        >
-                                            Achievements
-                                        </NavLink>
-                                        <div className="hidden sm:-my-px sm:ms-10 sm:flex">
-                                            <NavLink
-                                                href={route("dashboard")}
-                                                active={route().current(
-                                                    "dashboard"
-                                                )}
-                                            >
-                                                Contact
-                                            </NavLink>
-                                        </div>
-                                    </div>
-                                </div>
+            <div className="mx-2 sm:mx-5 md:mx-10 lg:mx-20 xl:mx-56 my-5">
+                <div className="flex w-full gap-4">
+                    <div className="w-3/12 flex flex-col gap-2">
+                        {stages.map((stage) => (
+                            <div
+                                key={stage.id}
+                                onClick={() => handleStageClick(stage)}
+                                className="w-full h-auto cursor-pointer bg-[#E0E0E0] shadow-md rounded-lg p-4 flex items-center justify-start transition-transform duration-300 hover:scale-105 hover:bg-[#D0D0D0]"
+                            >
+                                <h3 className="text-base font-semibold text-black">
+                                    {stage.stage}
+                                </h3>
                             </div>
-
-                            <div className="-me-2 flex items-center sm:hidden">
-                                <button
-                                    onClick={() =>
-                                        setShowingNavigationDropdown(
-                                            (previousState) => !previousState
-                                        )
-                                    }
-                                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
-                                >
-                                    <svg
-                                        className="h-6 w-6"
-                                        stroke="currentColor"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
+                        ))}
+                    </div>
+                    <div className="w-3/12 bg-white shadow-md rounded-lg p-4">
+                        <h4 className="text-sm font-semibold text-black mb-2">
+                            Current Path:
+                        </h4>
+                        <div className="flex gap-2 flex-wrap">
+                            <ol className="relative text-gray-500 border-l p-2 border-gray-200 dark:border-gray-700 dark:text-gray-400">
+                                {path.map((node, index) => (
+                                    <li
+                                        className="mb-10 ml-6 cursor-pointer"
+                                        key={node.id}
+                                        onClick={() => handlePathClick(node, index)}
                                     >
-                                        <path
-                                            className={
-                                                !showingNavigationDropdown
-                                                    ? "inline-flex"
-                                                    : "hidden"
-                                            }
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4 6h16M4 12h16M4 18h16"
-                                        />
-                                        <path
-                                            className={
-                                                showingNavigationDropdown
-                                                    ? "inline-flex"
-                                                    : "hidden"
-                                            }
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M6 18L18 6M6 6l12 12"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
+                                        <span className="absolute flex items-center justify-center w-8 h-8 bg-green-200 rounded-full -left-4 ring-4 ring-white dark:ring-gray-900 dark:bg-green-900">
+                                            {index + 1}
+                                        </span>
+                                        <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+                                            <p className="text-sm font-semibold text-black">
+                                                {node.question || node.stage}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ol>
                         </div>
                     </div>
-                </div>
-
-                <div
-                    className={
-                        (showingNavigationDropdown ? "block" : "hidden") +
-                        " sm:hidden"
-                    }
-                >
-                    <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Home
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            About Us
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Students
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Partners
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Alumni
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            CSD
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            LMS
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Achievements
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Contact
-                        </ResponsiveNavLink>
+                    <div className="w-6/12 h-auto flex flex-col gap-4">
+                        {currentChildren.length > 0 ? (
+                            <div className="grid grid-cols-3 gap-4 p-4">
+                                {currentChildren.map((child) => (
+                                    <div
+                                        key={child.id}
+                                        onClick={() => handleChildClick(child)}
+                                        className="bg-white shadow-md rounded-lg p-4 flex flex-col items-start justify-start cursor-pointer transition-transform duration-300 hover:scale-105"
+                                    >
+                                        <h4 className="text-sm font-semibold text-black">
+                                            {child.question ? child.question : child.stage}
+                                        </h4>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex justify-center items-start h-full relative">
+                                <div className="p-4 bg-green-100 text-green-700 rounded-lg shadow-md border-2 border-green-500 zigzag-border">
+                                    <p className="text-base">
+                                        {lastNodeInPath.question || lastNodeInPath.stage}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </div>
+
+                    
                 </div>
-            </nav>
-            <main>
-                <DecisionTreeBanner />
-            </main>
-            <div className="mx-4 sm:mx-10 md:mx-20 lg:mx-40 xl:mx-56 my-5">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-[32px] font-bold leading-tight md:leading-snug lg:leading-[40px] text-center text-[#283B45]">
-                    Trait Discovery and Deployment Implementation Decision Tree
-                </h1>
-                <Questions />
             </div>
         </div>
     );
-}
+};
+
+export default Welcome;

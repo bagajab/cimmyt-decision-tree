@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('decision_trees', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('question');
+            $table->string('category')->nullable();
+            $table->string('question')->nullable();
             $table->text('description')->nullable();
             $table->boolean('starter_question')->default(false);
             $table->unsignedBigInteger('go_to_id')->nullable();

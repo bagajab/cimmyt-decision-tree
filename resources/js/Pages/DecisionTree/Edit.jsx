@@ -8,26 +8,26 @@ import Select from 'react-select';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 
-const Create = ({ auth, nodes }) => {
+const Edit = ({ auth, node, nodes }) => {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    const selectOptions = nodes.map(node => ({
-      value: node.id,
-      label: node.stage ? `${node.stage} - ${node.question || ''}` : node.question,
+    const selectOptions = nodes.map(n => ({
+      value: n.id,
+      label: n.stage ? `${n.stage} - ${n.question || ''}` : n.question,
     }));
     setOptions(selectOptions);
   }, [nodes]);
-
-  const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
-    stage: '',
-    question: '',
-    description: '',
-    starter_question: false,
-    parent_id: null,
-    go_to_id: null,
-    yes_action_id: null,
-    no_action_id: null,
+  console.log();
+  const { data, setData, put, processing, errors, recentlySuccessful } = useForm({
+    stage: node.stage,
+    question: node.question,
+    description: node.description,
+    starter_question: node.starter_question,
+    parent_id: node.parent_id,
+    go_to_id: node.go_to_id,
+    yes_action_id: node.yes_action_id,
+    no_action_id: node.no_action_id,
   });
 
   const handleChange = (e) => {
@@ -40,17 +40,19 @@ const Create = ({ auth, nodes }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post('/decision-tree');
+    put(`/decision-tree/${node.id}`);
   };
 
   const isStarterQuestion = data.starter_question;
   const hasGoToAction = !!data.go_to_id;
 
+  const getDefaultValue = (field) => options.find(option => option.value === data[field]);
+
   return (
     <AuthenticatedLayout user={auth.user}>
       <div className="flex items-center justify-center min-h-screen bg-gray-100 py-12 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8 bg-white p-8 shadow-lg rounded-lg">
-          <h2 className="text-center text-2xl font-bold text-gray-900">Add Node</h2>
+          <h2 className="text-center text-2xl font-bold text-gray-900">Edit Node</h2>
           <form onSubmit={handleSubmit} className="mt-6 space-y-6">
             <div>
               <InputLabel htmlFor="stage" value="Stage" />
@@ -60,7 +62,6 @@ const Create = ({ auth, nodes }) => {
                 value={data.stage}
                 onChange={handleChange}
                 required={isStarterQuestion}
-                isFocused
                 autoComplete="stage"
               />
               <InputError className="mt-2" message={errors.stage} />
@@ -75,6 +76,7 @@ const Create = ({ auth, nodes }) => {
                     className="mt-1 block w-full"
                     value={data.question}
                     onChange={handleChange}
+                    required
                     autoComplete="question"
                   />
                   <InputError className="mt-2" message={errors.question} />
@@ -87,6 +89,7 @@ const Create = ({ auth, nodes }) => {
                     options={options}
                     onChange={(selectedOption) => handleSelectChange('parent_id', selectedOption)}
                     className="mt-1 block w-full"
+                    defaultValue={getDefaultValue('parent_id')}
                   />
                   <InputError className="mt-2" message={errors.parent_id} />
                 </div>
@@ -123,6 +126,7 @@ const Create = ({ auth, nodes }) => {
                 options={options}
                 onChange={(selectedOption) => handleSelectChange('go_to_id', selectedOption)}
                 className="mt-1 block w-full"
+                defaultValue={getDefaultValue('go_to_id')}
               />
               <InputError className="mt-2" message={errors.go_to_id} />
             </div>
@@ -136,6 +140,7 @@ const Create = ({ auth, nodes }) => {
                     options={options}
                     onChange={(selectedOption) => handleSelectChange('yes_action_id', selectedOption)}
                     className="mt-1 block w-full"
+                    defaultValue={getDefaultValue('yes_action_id')}
                   />
                   <InputError className="mt-2" message={errors.yes_action_id} />
                 </div>
@@ -147,6 +152,7 @@ const Create = ({ auth, nodes }) => {
                     options={options}
                     onChange={(selectedOption) => handleSelectChange('no_action_id', selectedOption)}
                     className="mt-1 block w-full"
+                    defaultValue={getDefaultValue('no_action_id')}
                   />
                   <InputError className="mt-2" message={errors.no_action_id} />
                 </div>
@@ -154,7 +160,7 @@ const Create = ({ auth, nodes }) => {
             )}
 
             <div className="flex items-center gap-4">
-              <PrimaryButton disabled={processing}>Add</PrimaryButton>
+              <PrimaryButton disabled={processing}>Save</PrimaryButton>
               <Transition
                 show={recentlySuccessful}
                 enter="transition ease-in-out"
@@ -172,4 +178,4 @@ const Create = ({ auth, nodes }) => {
   );
 };
 
-export default Create;
+export default Edit;
