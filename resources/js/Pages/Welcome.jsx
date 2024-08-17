@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { DecisionTreeBanner, Header } from "./DecisionTree/Header";
 
 const Welcome = ({ auth, laravelVersion, phpVersion, nodes = [] }) => {
-    console.log({ nodes });
     const stages = nodes.filter((node) => node.starter_question);
     const [currentStage, setCurrentStage] = useState(stages[0]);
     const [path, setPath] = useState([stages[0]]);
